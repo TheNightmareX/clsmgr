@@ -1,11 +1,11 @@
-import * as components from "../../../../static/public/js/components.js";
+import * as components from "../../../../static/public/js/components.js"
 
 
 /**
  * 
  * @param {components.MduiIFrame} $iframe 
  */
-function bindIFrameApps($iframe) {
+function bindDrawerEvents($iframe) {
     const APPS = ['stulist']
     for (const $item of document.querySelectorAll('[app]')) {
         const app = $item.getAttribute('app')
@@ -18,4 +18,4 @@ function bindIFrameApps($iframe) {
 
 const $iframe = document.querySelector('mdui-iframe')
 
-bindIFrameApps($iframe)
+bindDrawerEvents($iframe)

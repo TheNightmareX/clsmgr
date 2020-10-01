@@ -13,6 +13,7 @@
     <script defer src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
         integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+" crossorigin="anonymous">
     </script>
+
     <script defer type="module" src="{% static 'index/js/main.js' %}"></script>
 </head>
 
@@ -29,19 +30,8 @@
     </div>
 
     <div class="mdui-drawer mdui-shadow-5">
-        <ul class="mdui-list" mdui-collapse>
-            <div class="mdui-collapse-item">
-                <div class="mdui-collapse-item-header">
-                    <li class="mdui-list-item mdui-ripple">
-                        <div class="mdui-list-item-content">基础设置</div>
-                        <i
-                            class="mdui-list-item-icon mdui-icon material-icons mdui-collapse-item-arrow">keyboard_arrow_down</i>
-                    </li>
-                </div>
-                <div class="mdui-collapse-item-body">
-                    <li class="mdui-list-item mdui-ripple" app="stulist">学生名单</li>
-                </div>
-            </div>
+        <ul class="mdui-list">
+            <li class="mdui-list-item mdui-ripple" app="stulist">学生列表</li>
         </ul>
     </div>
 
