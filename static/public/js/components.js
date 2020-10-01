@@ -38,3 +38,24 @@ export class MduiIFrame extends HTMLElement {
     }
 }
 customElements.define('mdui-iframe', MduiIFrame)
+
+export class MduiNavUList extends HTMLUListElement {
+    constructor() {
+        super()
+        const $iframe = document.querySelector(this.getAttribute('iframe'))
+        const originalUrl = $iframe.src
+        for (const $li of this.children) {
+            $li.classList.add('mdui-list-item', 'mdui-ripple')
+            $li.addEventListener('click', () => {
+                let url = $li.getAttribute('url')
+                const ACTIVE_CALSSNAME = 'mdui-list-item-active'
+                const $curActive = this.querySelector('.mdui-list-item-active')
+                if ($curActive) $curActive.classList.remove(ACTIVE_CALSSNAME)
+                if ($curActive != $li) $li.classList.add(ACTIVE_CALSSNAME)
+                else url = originalUrl
+                $iframe.src = url
+            })
+        }
+    }
+}
+customElements.define('mdui-nav-ulist', MduiNavUList, { extends: 'ul' })
