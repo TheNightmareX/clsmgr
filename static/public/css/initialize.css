@@ -1,0 +1,26 @@
+* {
+    margin: initial;
+    padding: initial;
+}
+
+a {
+    text-decoration: initial;
+    color: initial;
+}
+
+ul {
+    list-style: none;
+}
+
+input,
+button {
+    border: initial;
+    border-radius: initial;
+    font: initial;
+    outline: initial;
+    background-color: initial;
+}
+
+iframe {
+    border: none;
+}

@@ -1,0 +1,19 @@
+@import url(/static/public/css/initialize.css);
+@import url(/static/public/css/components.css);
+
+
+/* Full Screen */
+    body {
+        height: calc(100% - 64px);
+    }
+
+    html,
+    main {
+        height: 100%;
+        overflow: hidden;
+    }
+
+mdui-iframe {
+    width: 100%;
+    height: 100%;
+}
