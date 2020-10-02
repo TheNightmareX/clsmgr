@@ -1,16 +1,14 @@
-mdui-iframe {
-    display: inline-block;
+.mdui-iframe-wrap {
     position: relative;
 }
 
-    mdui-iframe > iframe {
+    .mdui-iframe-wrap > iframe[is="mdui-iframe"] {
         display: block;
         width: 100%;
         height: 100%;
     }
 
-    /* Overlay */
-    mdui-iframe > div {
+    .mdui-iframe-wrap > .mdui-iframe-overlay {
         position: absolute;
         left: 0;
         right: 0;
@@ -18,7 +16,7 @@ mdui-iframe {
         bottom: 0;
         background-color: white;
     }
-        mdui-iframe > div.hidden {
+        .mdui-iframe-wrap > .mdui-iframe-overlay.hidden {
             opacity: 0;
             transition: opacity .5s linear;
         }

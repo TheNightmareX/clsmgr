@@ -1,0 +1,7 @@
+@import url(/static/public/css/initialize.css);
+@import url(/static/public/css/components.css);
+
+
+div.mdui-table-fluid {
+    margin-top: 30px;
+}

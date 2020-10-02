@@ -18,9 +18,11 @@ from django.urls import path
 from django.urls import include
 
 import index.urls
+import sysmgr.urls
 
 
 urlpatterns = [
     path('', include(index.urls)),
+    path('sysmgr/', include(sysmgr.urls)),
     path('admin/', admin.site.urls),
 ]

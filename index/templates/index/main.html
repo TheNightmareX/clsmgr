@@ -3,6 +3,7 @@
 <html lang="zh">
 
 <head>
+
     <title>Index</title>
     <meta charset="UTF-8">
 
@@ -13,8 +14,8 @@
     <script defer src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
         integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+" crossorigin="anonymous">
     </script>
-
     <script defer type="module" src="{% static 'index/js/main.js' %}"></script>
+
 </head>
 
 <body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-appbar-with-toolbar mdui-drawer-body-left">
@@ -23,20 +24,34 @@
         <div class="mdui-toolbar mdui-color-theme">
             <a class="mdui-btn mdui-btn-icon" mdui-drawer="{target: '.mdui-drawer'}"><i
                     class="mdui-icon material-icons">menu</i></a>
-            <span class="mdui-typo-title">轩然の管理系统</span>
+            <span class="mdui-typo-title">轩然の班级平台</span>
             <div class="mdui-toolbar-spacer"></div>
             <a class="mdui-btn mdui-btn-icon"><i class="mdui-icon material-icons">more_vert</i></a>
         </div>
     </div>
 
     <div class="mdui-drawer mdui-shadow-5">
-        <ul is="mdui-nav-ulist" class="mdui-list" iframe="mdui-iframe">
-            <li class="mdui-list-item mdui-ripple" url="/stulist/">学生列表</li>
+        <ul is="mdui-nav-ulist" class="mdui-list" iframe="iframe">
+            <div class="mdui-collapse" mdui-collapse>
+                <div class="mdui-collapse-item">
+                    <div class="mdui-collapse-item-header">
+                        <li class="mdui-list-item mdui-ripple">
+                            <div class="mdui-list-item-content">系统管理</div>
+                            <i class="mdui-list-item-icon mdui-icon material-icons mdui-collapse-item-arrow">keyboard_arrow_down</i>
+                        </li>
+                    </div>
+                    <div class="mdui-collapse-item-body">
+                        <li class="mdui-list-item mdui-ripple" url="/sysmgr/stulist/">学生名单</li>
+                    </div>
+                </div>
+            </div>
         </ul>
     </div>
-    
+
     <main>
-        <mdui-iframe src=""></mdui-iframe>
+        <div class="mdui-iframe-wrap">
+            <iframe is="mdui-iframe" src=""></iframe>
+        </div>
     </main>
 
 </body>
