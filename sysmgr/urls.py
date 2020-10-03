@@ -4,5 +4,5 @@ from sysmgr import views
 
 
 urlpatterns = [
-    path('stulist/', views.stulist)
+    path('stulist/', views.stulist),
 ]

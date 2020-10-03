@@ -1,6 +1,10 @@
 /**
  * 
- * @typedef {{stulist: Object<number, string>}} databaseData
+ * @typedef {{students: databaseData_students}} databaseData
+ */
+/**
+ * 
+ * @typedef {Object<number, string>} databaseData_students
  */
 
 
@@ -24,28 +28,18 @@ class Database {
 
         this.id = id
         /**@type {databaseData} */
-        this.data = Database.localStorageProxy[id] || {
-            stulist: {},
+        this.data = Database.localStorageProxy[this.id] || {
+            students: {},
         }
 
         window.addEventListener('unload', () => {
             if (window.DONOTSAVE) return
             if (window.RESET) this.data = null
-            Database.localStorageProxy[id] = this.data
+            Database.localStorageProxy[this.id] = this.data
         })
     }
 }
 
 
 const database = new Database()
-const $iframe = document.querySelector('iframe')
-
-window.addEventListener('message', ev => {
-    const data = ev.data
-    if (data == null) {
-        $iframe.contentWindow.postMessage(database.data)
-    } else {
-        database.data = data
-        mdui.snackbar({ message: '数据变动已保存', position: 'right-top', timeout: 200 })
-    }
-})
+window.data = database.data

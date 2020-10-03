@@ -1,0 +1,52 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+
+    <title>Index</title>
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/css/mdui.min.css"
+        integrity="sha384-2PJ2u4NYg6jCNNpv3i1hK9AoAqODy6CdiC+gYiL2DVx+ku5wzJMFNdE3RoWfBIRP" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'tools/css/thechosen.css' %}">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
+        integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+" crossorigin="anonymous">
+    </script>
+    <script defer type="module" src="{% static 'tools/js/thechosen.js' %}"></script>
+
+</head>
+
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+
+    <main class="mdui-container">
+
+        <div is="mdui-checkbox-list-group" id="list-group" class="mdui-row-xs-4">
+            <div is="mdui-checkbox-list" class="mdui-col mdui-list"></div>
+            <div is="mdui-checkbox-list" class="mdui-col mdui-list"></div>
+            <div is="mdui-checkbox-list" class="mdui-col mdui-list"></div>
+            <div is="mdui-checkbox-list" class="mdui-col mdui-list"></div>
+        </div>
+
+        <div class="mdui-row">
+            <div class="mdui-col mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">数量</label>
+                <input id="count-input" class="mdui-textfield-input" type="number" />
+            </div>
+        </div>
+
+        <div class="mdui-row">
+            <div class="mdui-col-xs-11">
+                <button id="choose-btn" class="mdui-color-theme mdui-btn mdui-btn-block mdui-ripple">选定</button>
+            </div>
+            <div class="mdui-col-xs-1">
+                <button id="reset-btn" class="mdui-btn mdui-btn-block mdui-ripple">重置</button>
+            </div>
+        </div>
+
+    </main>
+
+</body>
+
+</html>

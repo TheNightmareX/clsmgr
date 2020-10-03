@@ -1,6 +1,6 @@
 /**
  * 
- * @typedef {Object<number, string>} stuMap
+ * @typedef {import('../../../../index/static/index/js/main.js').databaseData_students} students
  */
 /**
  * 
@@ -14,7 +14,7 @@ import * as components from "../../../../static/public/js/components.js";
 /**
  * 
  * @param {components.DataTable} $table 
- * @param {stuMap} stuMap 
+ * @param {students} stuMap 
  */
 function setTableData($table, stuMap) {
     const tableData = []
@@ -45,16 +45,16 @@ function setupNumberInputEle($input) {
  * @param {HTMLInputElement} $nameInput 
  * @param {HTMLButtonElement} $button 
  * @param {components.DataTable} $table 
- * @param {stuMap} stuMap
+ * @param {students} students
  */
-function setupAddStuEles($idInput, $nameInput, $button, $table, stuMap) {
+function setupAddStuEles($idInput, $nameInput, $button, $table, students) {
     setupNumberInputEle($idInput)
     $button.addEventListener('click', () => {
         if ($idInput.value == '' || $nameInput.value == '') return
         const id = Number($idInput.value)
         const name = $nameInput.value
-        stuMap[id] = name
-        setTableData($table, stuMap)
+        students[id] = name
+        setTableData($table, students)
     })
 }
 
@@ -63,42 +63,36 @@ function setupAddStuEles($idInput, $nameInput, $button, $table, stuMap) {
  * @param {HTMLInputElement} $idInput 
  * @param {HTMLButtonElement} $button 
  * @param {components.DataTable} $table 
- * @param {stuMap} stuMap
+ * @param {students} students
  */
-function setupDelStuEles($idInput, $button, $table, stuMap) {
+function setupDelStuEles($idInput, $button, $table, students) {
     setupNumberInputEle($idInput)
     $button.addEventListener('click', () => {
         if ($idInput.value == '') return
         const id = Number($idInput.value)
-        delete stuMap[id]
-        setTableData($table, stuMap)
+        delete students[id]
+        setTableData($table, students)
     })
 }
 
 
-window.parent.postMessage(null)
-window.addEventListener('message', ev => {
-    /**@type {databaseData} */
-    const data = ev.data
-    /**@type {stuMap} */
-    const stuMap = data.stulist
-    /**@type {components.DataTable} */
-    const $table = document.querySelector('table')
-    setTableData($table, stuMap)
-    setupAddStuEles(
-        document.querySelector('input.add[type="number"]'), 
-        document.querySelector('input.add[type="text"]'), 
-        document.querySelector('button.add'),
-        $table,
-        stuMap
-    )
-    setupDelStuEles(
-        document.querySelector('input.del[type="number"]'), 
-        document.querySelector('button.del'),
-        $table,
-        stuMap
-    )
-    window.addEventListener('unload', () => {
-        window.parent.postMessage(data)
-    })
-})
+/**@type {databaseData} */
+const data = window.parent.data
+/**@type {students} */
+const students = data.students
+/**@type {components.DataTable} */
+const $table = document.querySelector('table')
+setTableData($table, students)
+setupAddStuEles(
+    document.querySelector('input.add[type="number"]'), 
+    document.querySelector('input.add[type="text"]'), 
+    document.querySelector('button.add'),
+    $table,
+    students
+)
+setupDelStuEles(
+    document.querySelector('input.del[type="number"]'), 
+    document.querySelector('button.del'),
+    $table,
+    students
+)

@@ -66,7 +66,7 @@ export class DataTable extends HTMLTableElement {
     /**@param {Object<string, any>[]} dataset */
     setData(dataset) {
         this.clear()
-        if (dataset.length == 0) return
+        if (!dataset.length) return
         const fileds = Object.keys(dataset[0])
         /**@type {HTMLTableRowElement} */
         const $headerRow = document.createElement('tr')
@@ -88,3 +88,97 @@ export class DataTable extends HTMLTableElement {
     }
 }
 customElements.define('data-table', DataTable, { extends: 'table' })
+
+/**The element should have a classname `mdui-list` */
+export class MduiCheckboxList extends HTMLDivElement {
+    clear() {
+        this.innerHTML = ''
+    }
+    get items() {
+        /**@type {Object<string, boolean>} */
+        const items = {}
+        for (const $item of this.children) {
+            /**@type {HTMLLabelElement} */
+            const $label = $item
+            const checked = $label.querySelector('input').checked
+            const text = $label.lastElementChild.innerText
+            items[text] = checked
+        }
+        return items
+    }
+    set items(items) {
+        this.clear()
+        for (const text in items) {
+            const checked = items[text]
+
+            const $item = document.createElement('label')
+            $item.classList.add('mdui-list-item', 'mdui-ripple')
+
+            const $checkboxDiv = document.createElement('div')
+            $checkboxDiv.classList.add('mdui-checkbox')
+
+            const $checkbox = document.createElement('input')
+            $checkbox.type = 'checkbox'
+            $checkbox.checked = checked
+
+            const $checkboxIcon = document.createElement('i')
+            $checkboxIcon.classList.add('mdui-checkbox-icon')
+
+            const $content = document.createElement('div')
+            $content.innerText = text
+
+            $checkboxDiv.append($checkbox, $checkboxIcon)
+            $item.append($checkboxDiv, $content)
+            this.append($item)
+        }
+    }
+    get length() {
+        return this.children.length
+    }
+}
+customElements.define('mdui-checkbox-list', MduiCheckboxList, { extends: 'div' })
+
+/**There should be only muiltiple `<div is="mdui-checkbox-ulist">` inside the element without other elements. */
+export class MduiCheckboxListGroup extends HTMLDivElement {
+    constructor() {
+        super()
+        /**@type {HTMLCollectionOf<MduiCheckboxList>} */
+        this.$lists = this.children
+    }
+    /**
+     * 
+     * @param {($list: MduiCheckboxList) => void} callback 
+     */
+    _forEach(callback) {
+        for (const $list of this.$lists) {
+            callback($list)
+        }
+    }
+    clear() {
+        this._forEach($list => $list.clear())
+    }
+    get items() {
+        /**@type {Object<string, boolean>} */
+        const items = {}
+        this._forEach($list => Object.assign(items, $list.items))
+        return items
+    }
+    set items(items) {
+        this.clear()
+        let managed = 0
+        const keys = Object.keys(items)
+        const quota = Math.ceil(keys.length / this.$lists.length)
+        this._forEach($list => {
+            const subItems = {}
+            for (const key of keys.slice(managed, managed + quota)) {
+                subItems[key] = items[key]
+            }
+            managed += quota
+            $list.items = subItems
+        })
+    }
+    get length() {
+        return this.querySelectorAll('input').length
+    }
+}
+customElements.define('mdui-checkbox-list-group', MduiCheckboxListGroup, { extends: 'div' })
