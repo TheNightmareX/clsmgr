@@ -1,10 +1,14 @@
 /**
  * 
- * @typedef {{students: databaseData_students}} databaseData
+ * @typedef {{ students: databaseData_students, thechosen: databaseData_thechosen }} databaseData
  */
 /**
- * 
+ * { id: name, id: name, id: name, ... }
  * @typedef {Object<number, string>} databaseData_students
+ */
+/**
+ * [id, id, id, ...]
+ * @typedef {string[]} databaseData_thechosen
  */
 
 
@@ -30,6 +34,7 @@ class Database {
         /**@type {databaseData} */
         this.data = Database.localStorageProxy[this.id] || {
             students: {},
+            thechosen: []
         }
 
         window.addEventListener('unload', () => {

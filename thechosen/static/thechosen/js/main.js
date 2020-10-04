@@ -18,10 +18,10 @@ import { ObjPropertyPointer, setupNumberInput } from "../../../../static/public/
  * @param {students} students - All the students.
  * @param {Set<string>} checked - A set of students' id which will be set to checked. Don't specify to set all to checked.
  */
-function setListGroupData($listGroup, students, checked=null) {
+function setListGroupData($listGroup, students, checked=new Set()) {
     const items = {}
     for (const id in students) {
-        items[`${id}# ${students[id]}`] = checked ? checked.has(id) : true
+        items[`${id}# ${students[id]}`] = checked.size ? checked.has(id) : true
     }
     $listGroup.items = items
 }
@@ -78,7 +78,7 @@ const $listGroup = document.querySelector('#list-group')
 /**@type {HTMLInputElement} */
 const $countInput = document.querySelector('#count-input')
 
-setListGroupData($listGroup, data.students)
+setListGroupData($listGroup, data.students, new Set(data.thechosen))
 setupNumberInput($countInput, { int: true, min: 1, max: $listGroup.length })
 document.querySelector('#choose-btn').addEventListener('click', () => {
     const count = Number($countInput.value)
@@ -86,7 +86,9 @@ document.querySelector('#choose-btn').addEventListener('click', () => {
     const availableStudentsSet = getCheckedStudents($listGroup)
     const chosenIdSet = chooseStudents(availableStudentsSet, count)
     setListGroupData($listGroup, data.students, chosenIdSet)
+    data.thechosen = [...chosenIdSet]
 })
 document.querySelector('#reset-btn').addEventListener('click', () => {
     setListGroupData($listGroup, data.students)
+    data.thechosen = []
 })
