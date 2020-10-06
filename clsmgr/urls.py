@@ -18,13 +18,11 @@ from django.urls import path
 from django.urls import include
 
 import index.urls
-import sysmgr.urls
-import thechosen.urls
+import students.urls
 
 
 urlpatterns = [
     path('', include(index.urls)),
-    path('sysmgr/', include(sysmgr.urls)),
-    path('thechosen/', include(thechosen.urls)),
+    path('students/', include(students.urls)),
     path('admin/', admin.site.urls),
 ]
