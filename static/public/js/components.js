@@ -1,5 +1,5 @@
 /**There ought to be a `div.mdui-iframe-wrap` outside the element */
-export class MduiIFrame extends HTMLIFrameElement {
+export class MduiIFrameElement extends HTMLIFrameElement {
     static get observedAttributes() {
         return ['src']
     }
@@ -30,25 +30,30 @@ export class MduiIFrame extends HTMLIFrameElement {
         this.$overlay.classList.add('hidden')
     }
 }
-customElements.define('mdui-iframe', MduiIFrame, { extends: 'iframe' })
+customElements.define('mdui-iframe', MduiIFrameElement, { extends: 'iframe' })
 
-export class MduiNavUList extends HTMLUListElement {
+export class NavigatorElement extends HTMLElement {
     constructor() {
         super()
         /**@type {HTMLIFrameElement} */
-        this.$iframe = document.querySelector(this.getAttribute('iframe'))
-        const originalUrl = this.$iframe.getAttribute('src')
-        for (const $li of this.querySelectorAll('li[url]')) {
-            $li.addEventListener('click', () => {
-                let url = $li.getAttribute('url')
-                const ACTIVE_CALSSNAME = 'mdui-list-item-active'
-                const $curActive = this.querySelector('.mdui-list-item-active')
-                if ($curActive) $curActive.classList.remove(ACTIVE_CALSSNAME)
-                if ($curActive != $li) $li.classList.add(ACTIVE_CALSSNAME)
-                else url = originalUrl
-                this.$iframe.src = url
+        const $iframe = document.querySelector(this.getAttribute('iframe'))
+        const itemsSelector = this.getAttribute('items-selector')
+        const originalUrl = $iframe.getAttribute('src')
+        const activeClassName = this.getAttribute('active-class-name')
+        for (const $item of this.querySelectorAll(itemsSelector)) {
+            $item.addEventListener('click', () => {
+                const $curActiveItem = this.querySelector(`.${activeClassName}`)
+                if ($curActiveItem) $curActiveItem.classList.remove(activeClassName)
+                if ($curActiveItem == $item) {
+                    $iframe.src = originalUrl
+                } else {
+                    const url = $item.getAttribute('url')
+                    $item.classList.add(activeClassName)
+                    $iframe.src = url
+                }
             })
         }
+
     }
 }
-customElements.define('mdui-nav-ulist', MduiNavUList, { extends: 'ul' })
+customElements.define('navigator-ele', NavigatorElement)
