@@ -12,8 +12,7 @@
  */
 
 
-import * as components from "../../../../static/public/js/components.js"
-import { mdui } from "../../../../static/public/js/libdeclare.js";
+import "../../../../static/public/js/components.js"
 
 
 class Database {

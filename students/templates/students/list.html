@@ -1,0 +1,61 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="zh">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/css/mdui.min.css"
+        integrity="sha384-2PJ2u4NYg6jCNNpv3i1hK9AoAqODy6CdiC+gYiL2DVx+ku5wzJMFNdE3RoWfBIRP" crossorigin="anonymous" />
+    <link rel="stylesheet" href="{% static 'students/css/list.css'%}">
+
+    <script defer src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
+        integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+" crossorigin="anonymous">
+    </script>
+    <script type="module" src="{% static 'students/js/list.js'%}"></script>
+
+</head>
+
+<body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
+
+    <main class="mdui-container">
+        <div is="activator-div" id="table-activator" class="mdui-table-fluid" items-selector="tbody tr" active-class-name="mdui-color-theme-accent" activate-on-click>
+            <table class="mdui-table mdui-table-hoverable">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>姓名</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for id, name in students.items %}
+                    <tr>
+                        <td>{{ id }}</td>
+                        <td>{{ name }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </main>
+
+    <button class="mdui-color-theme mdui-fab mdui-fab-fixed mdui-ripple" mdui-dialog="{ target: '#start-dialog' }"><i
+            class="mdui-icon material-icons">people</i></button>
+
+    <div id="start-dialog" class="mdui-dialog">
+        <div class="mdui-dialog-title">天选之子</div>
+        <div class="mdui-dialog-content">
+            <div class="mdui-textfield mdui-textfield-floating-label">
+                <label class="mdui-textfield-label">人数</label>
+                <input id="count-input" class="mdui-textfield-input" type="number" />
+            </div>
+        </div>
+        <div class="mdui-dialog-actions">
+            <button id="start-btn" class="mdui-btn mdui-ripple" mdui-dialog-confirm>选定</button>
+        </div>
+    </div>
+
+</body>
+
+</html>
