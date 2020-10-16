@@ -113,6 +113,14 @@ export class NavigatorElement extends HTMLElement {
 }
 customElements.define('navigator-ele', NavigatorElement)
 
+export class IntInput extends HTMLInputElement {
+    constructor() {
+        super()
+        this.onkeypress = ev => ev.key != '.'
+    }
+}
+customElements.define('int-input', IntInput, { extends: 'input' })
+
 
 /**
  * Pick out a specified number of random items at unique index from the array.
