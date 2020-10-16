@@ -8,12 +8,12 @@
 
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/css/mdui.min.css"
         integrity="sha384-2PJ2u4NYg6jCNNpv3i1hK9AoAqODy6CdiC+gYiL2DVx+ku5wzJMFNdE3RoWfBIRP" crossorigin="anonymous" />
-    <link rel="stylesheet" href="{% static 'students/css/list.css'%}">
+    <link rel="stylesheet" href="{% static 'students/css/student_list.css'%}">
 
     <script defer src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
         integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+" crossorigin="anonymous">
     </script>
-    <script type="module" src="{% static 'students/js/list.js'%}"></script>
+    <script type="module" src="{% static 'students/js/student_list.js'%}"></script>
 
 </head>
 
@@ -29,10 +29,10 @@
                     </tr>
                 </thead>
                 <tbody>
-                    {% for id, name in students.items %}
+                    {% for record in students %}
                     <tr>
-                        <td>{{ id }}</td>
-                        <td>{{ name }}</td>
+                        <td>{{ record.id }}</td>
+                        <td>{{ record.name }}</td>
                     </tr>
                     {% endfor %}
                 </tbody>

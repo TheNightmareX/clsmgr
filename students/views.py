@@ -1,10 +1,8 @@
 from django.shortcuts import render
-
+from django.views import generic as generic_views
 from . import models
 
 
-def student_list(request):
-    context = { 'students': {} }
-    for record in models.Student.objects.all():
-        context['students'][record.id] = record.name()
-    return render(request, 'students/list.html', context)
+class StudentListView(generic_views.ListView):
+    model = models.Student
+    context_object_name = 'students'
