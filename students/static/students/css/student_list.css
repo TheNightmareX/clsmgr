@@ -7,6 +7,7 @@ main {
     height: 100%;
 }
 
-main {
+#table-activator {
+    height: 94%;
     overflow: scroll;
 }

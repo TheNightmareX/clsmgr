@@ -20,7 +20,7 @@
 <body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
 
     <main class="mdui-container">
-        <div is="activator-div" id="table-activator" class="mdui-table-fluid" items-selector="tbody tr" active-class-name="mdui-color-theme-accent" activate-on-click>
+        <div is="activator-div" id="table-activator" class="mdui-row mdui-table-fluid" items-selector="tbody tr" active-class-name="mdui-color-theme-accent" activate-on-click>
             <table class="mdui-table mdui-table-hoverable">
                 <thead>
                     <tr>
@@ -38,21 +38,21 @@
                 </tbody>
             </table>
         </div>
+        <div class="mdui-row mdui-m-t-1">
+            <button class="mdui-btn mdui-ripple mdui-float-right" mdui-dialog="{ target: '#start-selection-dialog' }">天选之子</button>
+        </div>
     </main>
 
-    <button class="mdui-color-theme mdui-fab mdui-fab-fixed mdui-ripple" mdui-dialog="{ target: '#start-dialog' }"><i
-            class="mdui-icon material-icons">people</i></button>
-
-    <div id="start-dialog" class="mdui-dialog">
+    <div id="start-selection-dialog" class="mdui-dialog thechosen">
         <div class="mdui-dialog-title">天选之子</div>
         <div class="mdui-dialog-content">
             <div class="mdui-textfield mdui-textfield-floating-label">
                 <label class="mdui-textfield-label">人数</label>
-                <input id="count-input" class="mdui-textfield-input" type="number" />
+                <input class="mdui-textfield-input" type="number" />
             </div>
         </div>
         <div class="mdui-dialog-actions">
-            <button id="start-btn" class="mdui-btn mdui-ripple" mdui-dialog-confirm>选定</button>
+            <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>选定</button>
         </div>
     </div>
 
