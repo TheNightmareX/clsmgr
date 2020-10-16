@@ -32,8 +32,6 @@ class Database {
         this.id = id
         /**@type {databaseData} */
         this.data = Database.localStorageProxy[this.id] || {
-            students: {},
-            thechosen: []
         }
 
         window.addEventListener('unload', () => {
