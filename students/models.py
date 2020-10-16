@@ -1,5 +1,4 @@
 from django.db import models
-import typing
 
 class Student(models.Model):
     last_name = models.CharField('姓', max_length=1)

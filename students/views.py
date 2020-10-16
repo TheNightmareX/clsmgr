@@ -1,6 +1,6 @@
 from django.shortcuts import render
 
-from students import models
+from . import models
 
 
 def student_list(request):
