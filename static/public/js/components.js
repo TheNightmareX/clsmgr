@@ -1,3 +1,9 @@
+/**
+ * 
+ * @typedef {{ header: { title: string, summaries?: string[] }, body: { items: string | MduiPanelElementItemPattern[], actions: { text: string, firesCloseEvent?: boolean, onclick?: (ev) => void }[] } }} MduiPanelElementItemPattern
+ */
+
+
 /**There ought to be a `div.mdui-iframe-wrap` outside the element */
 export class MduiIFrameElement extends HTMLIFrameElement {
     static get observedAttributes() {
@@ -30,7 +36,10 @@ export class MduiIFrameElement extends HTMLIFrameElement {
         this.$overlay.classList.add('hidden')
     }
 }
-customElements.define('mdui-iframe', MduiIFrameElement, { extends: 'iframe' })
+customElements.define('mdui-iframe', MduiIFrameElement, {
+    extends: 'iframe'
+})
+
 
 export class ActivatorElement extends HTMLDivElement {
     constructor() {
@@ -85,7 +94,10 @@ export class ActivatorElement extends HTMLDivElement {
         }
     }
 }
-customElements.define('activator-div', ActivatorElement, { extends: 'div' })
+customElements.define('activator-div', ActivatorElement, {
+    extends: 'div'
+})
+
 
 export class NavigatorElement extends HTMLElement {
     constructor() {
@@ -113,13 +125,82 @@ export class NavigatorElement extends HTMLElement {
 }
 customElements.define('navigator-ele', NavigatorElement)
 
-export class IntInput extends HTMLInputElement {
+
+export class IntInputElement extends HTMLInputElement {
     constructor() {
         super()
         this.onkeypress = ev => ev.key != '.'
     }
 }
-customElements.define('int-input', IntInput, { extends: 'input' })
+customElements.define('int-input', IntInputElement, {
+    extends: 'input'
+})
+
+
+export class MduiPanelElement extends HTMLElement {
+    /**
+     * 
+     * @param {...MduiPanelElementItemPattern} itemPatterns
+     */
+    setItems(...itemPatterns) {
+        this.innerHTML = ''
+        const $panel = document.createElement('div')
+        $panel.classList.add('mdui-panel')
+        $panel.setAttribute('mdui-panel', '')
+
+        for (const pattern of itemPatterns) {
+            const $item = document.createElement('div')
+            $item.classList.add('mdui-panel-item')
+
+            const $header = document.createElement('div')
+            $header.classList.add('mdui-panel-item-header')
+
+            const $body = document.createElement('div')
+            $body.classList.add('mdui-panel-item-body')
+
+            const $title = document.createElement('div')
+            $title.classList.add('mdui-panel-item-title')
+            $title.innerText = pattern.header.title
+
+            const $summaries = []
+            for (const summary of pattern.header.summaries || []) {
+                const $summary = document.createElement('div')
+                $summary.classList.add('mdui-panel-item-summary')
+                $summary.innerText = summary
+                $summaries.push($summary)
+            }
+
+            const $bodyItems = []
+            for (const item of pattern.body.items) {
+                const $item = document.createElement('p')
+                $item.innerText = item
+                $bodyItems.push($item)
+            }
+
+            const $actionsDiv = document.createElement('div')
+            $actionsDiv.classList.add('mdui-panel-item-actions')
+
+            const $buttons = []
+            for (const action of pattern.body.actions || []) {
+                const $button = document.createElement('button')
+                $button.classList.add('mdui-btn', 'mdui-ripple')
+                if (action.firesCloseEvent) $button.setAttribute('mdui-panel-item-close', '')
+                $button.innerText = action.text
+                $button.onclick = action.onclick
+                $buttons.push($button)
+            }
+
+            $actionsDiv.append(...$buttons)
+            $header.append($title, ...$summaries)
+            $body.append(...$bodyItems, $actionsDiv)
+            $item.append($header, $body)
+            $panel.append($item)
+        }
+        this.append($panel)
+        mdui.mutation()
+    }
+}
+customElements.define('mdui-panel', MduiPanelElement)
 
 
 /**
@@ -142,7 +223,7 @@ function pickOutRandomItems(items, count) {
     const chosen = []
     const length = items.length
     if (count > length) count = length
-    for (let i=0; i++, i <= count;) {
+    for (let i = 0; i < count; i++) {
         const idx = pickOutUniqueIdx()
         chosen.push(items[idx])
     }

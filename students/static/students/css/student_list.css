@@ -11,3 +11,7 @@ main {
     height: 94%;
     overflow: scroll;
 }
+
+#submit-edit-request-dialog {
+    min-height: 80%;
+}

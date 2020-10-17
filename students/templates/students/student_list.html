@@ -41,6 +41,8 @@
         </div>
         <div class="mdui-row mdui-m-t-1">
             <button class="mdui-btn mdui-ripple mdui-float-right"
+                mdui-dialog="{ target: '#submit-edit-request-dialog' }">编辑</button>
+            <button class="mdui-btn mdui-ripple mdui-float-right"
                 mdui-dialog="{ target: '#start-selection-dialog' }">天选之子</button>
         </div>
     </main>
@@ -58,6 +60,37 @@
         </div>
     </div>
 
+    <div id="submit-edit-request-dialog" class="mdui-dialog thechosen">
+        <div class="mdui-dialog-title">编辑申请</div>
+        <div class="mdui-dialog-content mdui-container">
+            <form>
+                {% csrf_token %}
+                <div class="mdui-row">
+                    <div class="mdui-col-xs-4 mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">目标ID</label>
+                        <input is="int-input" class="mdui-textfield-input" name="target_id" type="number" min="0"
+                            required />
+                    </div>
+                    <div class="mdui-col mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">目标值</label>
+                        <input class="mdui-textfield-input" name="target_value" type="text" maxlength="4" />
+                    </div>
+                </div>
+                <div class="mdui-row">
+                    <div class="mdui-col mdui-textfield mdui-textfield-floating-label">
+                        <label class="mdui-textfield-label">备注</label>
+                        <input class="mdui-textfield-input" name="remark" type="text" maxlength="80" />
+                    </div>
+                </div>
+                <div class="mdui-row">
+                    <mdui-panel></mdui-panel>
+                </div>
+            </form>
+        </div>
+        <div class="mdui-dialog-actions">
+            <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>提交</button>
+        </div>
+    </div>
 </body>
 
 </html>
