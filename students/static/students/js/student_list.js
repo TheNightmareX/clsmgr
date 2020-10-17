@@ -13,6 +13,7 @@ import {
 /**@type {ActivatorElement} */
 const $tableActivator = document.querySelector('#table-activator')
 
+
 {
     /**@type {HTMLDivElement} */
     const $startSelectionDialog = document.querySelector('#start-selection-dialog')
@@ -20,11 +21,17 @@ const $tableActivator = document.querySelector('#table-activator')
     /**@type {HTMLInputElement} */
     const $countInput = $startSelectionDialog.querySelector('input')
 
+    // $startSelectionDialog.addEventListener('open.mdui.dialog', () => {
+    //     $countInput.max = $tableActivator.$items.length
+    //     mdui.mutation()
+    // })
+
     $startSelectionDialog.addEventListener('confirm.mdui.dialog', () => {
         const count = Number($countInput.value)
         $tableActivator.randomActive(count)
     })
 }
+
 
 {
     /**@type {HTMLDivElement} */

@@ -49,11 +49,10 @@
 
     <div id="start-selection-dialog" class="mdui-dialog thechosen">
         <div class="mdui-dialog-title">天选之子</div>
-        <div class="mdui-dialog-content">
-            <div class="mdui-textfield mdui-textfield-floating-label">
-                <label class="mdui-textfield-label">人数</label>
-                <input is="int-input" class="mdui-textfield-input" min="0" type="number" />
-            </div>
+        <div class="mdui-dialog-content mdui-p-l-4 mdui-p-r-4">
+            <label class="mdui-slider mdui-slider-discrete mdui-m-t-4">
+                <input type="range" step="1" min="0" max="{{ students.count }}" />
+            </label>
         </div>
         <div class="mdui-dialog-actions">
             <button class="mdui-btn mdui-ripple" mdui-dialog-confirm>选定</button>
