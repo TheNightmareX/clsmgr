@@ -17,7 +17,7 @@ class StudentListView(generic_views.ListView):
 class EditRequestListView(generic_views.View):
     def get_data(self):
         query_set: QuerySet = models.StudentEditRequest.objects.all()
-        query_set = query_set.order_by('-id')
+        query_set = query_set.order_by('-id')[:20]
         data = []
         for record in query_set:
             record: models.StudentEditRequest
