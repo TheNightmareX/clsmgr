@@ -1,7 +1,10 @@
 /**
  * 
- * @typedef {{ header: { title: string, summaries?: string[] }, body: { items: string | MduiPanelElementItemPattern[], actions: { text: string, firesCloseEvent?: boolean, onclick?: (ev) => void }[] } }} MduiPanelElementItemPattern
+ * @typedef {{ header: { title: string, summaries?: string[] }, body: { items?: string[], actions?: { text: string, firesCloseEvent?: boolean, onclick?: (ev) => void }[] } }} MduiPanelElementItemPattern
+ * @typedef {import('./createEle.js').EleDescription} EleDescription
  */
+
+import { createEle } from "./createEle.js"
 
 
 /**There ought to be a `div.mdui-iframe-wrap` outside the element */
@@ -14,12 +17,30 @@ export class MduiIFrameElement extends HTMLIFrameElement {
 
         this.addEventListener('load', () => this._hideOverlay())
 
-        this.$overlay = document.createElement('div')
-        this.$overlay.ontransitionend = () => this.$overlay.hidden = true
-        this.$overlay.classList.add('mdui-iframe-overlay')
-        this.$overlay.hidden = true
-        this.$overlay.innerHTML = '<div class="mdui-progress"><div class="mdui-progress-indeterminate"></div></div>'
-        this.$overlay = this.$overlay
+        this.$overlay = createEle({
+            tag: 'div',
+            attrs: {
+                'class': 'mdui-iframe-overlay',
+                'hidden': ''
+            },
+            addition: $ele => $ele.ontransitionend = () => this.$overlay.hidden = true,
+            childEles: [
+                {
+                    tag: 'div',
+                    attrs: {
+                        'class': 'mdui-progress'
+                    },
+                    childEles: [
+                        {
+                            tag: 'div',
+                            attrs: {
+                                'class': 'mdui-progress-indeterminate'
+                            },
+                        }
+                    ]
+                }
+            ]
+        })
     }
     connectedCallback() {
         this.after(this.$overlay)
@@ -144,59 +165,88 @@ export class MduiPanelElement extends HTMLElement {
      */
     setItems(...itemPatterns) {
         this.innerHTML = ''
-        const $panel = document.createElement('div')
-        $panel.classList.add('mdui-panel')
-        $panel.setAttribute('mdui-panel', '')
+        
 
-        for (const pattern of itemPatterns) {
-            const $item = document.createElement('div')
-            $item.classList.add('mdui-panel-item')
-
-            const $header = document.createElement('div')
-            $header.classList.add('mdui-panel-item-header')
-
-            const $body = document.createElement('div')
-            $body.classList.add('mdui-panel-item-body')
-
-            const $title = document.createElement('div')
-            $title.classList.add('mdui-panel-item-title')
-            $title.innerText = pattern.header.title
-
-            const $summaries = []
-            for (const summary of pattern.header.summaries || []) {
-                const $summary = document.createElement('div')
-                $summary.classList.add('mdui-panel-item-summary')
-                $summary.innerText = summary
-                $summaries.push($summary)
-            }
-
-            const $bodyItems = []
-            for (const item of pattern.body.items) {
-                const $item = document.createElement('p')
-                $item.innerText = item
-                $bodyItems.push($item)
-            }
-
-            const $actionsDiv = document.createElement('div')
-            $actionsDiv.classList.add('mdui-panel-item-actions')
-
-            const $buttons = []
-            for (const action of pattern.body.actions || []) {
-                const $button = document.createElement('button')
-                $button.classList.add('mdui-btn', 'mdui-ripple')
-                if (action.firesCloseEvent) $button.setAttribute('mdui-panel-item-close', '')
-                $button.innerText = action.text
-                $button.onclick = action.onclick
-                $buttons.push($button)
-            }
-
-            $actionsDiv.append(...$buttons)
-            $header.append($title, ...$summaries)
-            $body.append(...$bodyItems, $actionsDiv)
-            $item.append($header, $body)
-            $panel.append($item)
-        }
-        this.append($panel)
+        this.append(createEle({
+            tag: 'div',
+            attrs: {
+                'class': 'mdui-panel',
+                'mdui-panel': ''
+            },
+            childEles: itemPatterns.map(pattern => {
+                pattern.header.summaries = pattern.header.summaries || []
+                pattern.body.items = pattern.body.items || []
+                pattern.body.actions = pattern.body.actions || []
+                return createEle({
+                    // item root
+                    tag: 'div',
+                    attrs: {
+                        'class': 'mdui-panel-item'
+                    },
+                    childEles: [
+                        {
+                            // header
+                            tag: 'div',
+                            attrs: {
+                                'class': 'mdui-panel-item-header'
+                            },
+                            childEles: [
+                                {
+                                    // header title
+                                    tag: 'div',
+                                    text: pattern.header.title,
+                                    attrs: {
+                                        'class': 'mdui-panel-item-title',
+                                    }
+                                },
+                                ...pattern.header.summaries.map(text => createEle({
+                                    // header summaries
+                                    tag: 'div',
+                                    text,
+                                    attrs: {
+                                        'class': 'mdui-panel-item-summary'
+                                    }
+                                }))
+                            ]
+                        },
+                        {
+                            // body
+                            tag: 'div',
+                            attrs: {
+                                'class': 'mdui-panel-item-body'
+                            },
+                            childEles: [
+                                ...pattern.body.items.map(text => createEle({
+                                    // body items
+                                    tag: 'p',
+                                    text
+                                })),
+                                {
+                                    // actions div
+                                    tag: 'div',
+                                    attrs: {
+                                        'class': 'mdui-panel-item-actions'
+                                    },
+                                    childEles: pattern.body.actions.forEach(({ text, firesCloseEvent, onclick }) => {
+                                        const attrs = {
+                                            'class': 'mdui-btn mdui-ripple',
+                                        }
+                                        if (firesCloseEvent) attrs['mdui-panel-item-close'] = ''
+        
+                                        createEle({
+                                            // action button
+                                            tag: 'button',
+                                            attrs,
+                                            addition: $ele => $ele.onclick = onclick
+                                        })
+                                    })
+                                }
+                            ]
+                        }
+                    ]
+                })
+            })
+        }))
         mdui.mutation()
     }
 }
