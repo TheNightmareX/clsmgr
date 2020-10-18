@@ -4,7 +4,7 @@
  * @typedef {import('./createEle.js').EleDescription} EleDescription
  */
 
-import { createEle } from "./createEle.js"
+import createEle from "./createEle.js"
 
 
 /**There ought to be a `div.mdui-iframe-wrap` outside the element */
@@ -17,30 +17,11 @@ export class MduiIFrameElement extends HTMLIFrameElement {
 
         this.addEventListener('load', () => this._hideOverlay())
 
-        this.$overlay = createEle({
-            tag: 'div',
-            attrs: {
-                'class': 'mdui-iframe-overlay',
-                'hidden': ''
-            },
-            addition: $ele => $ele.ontransitionend = () => this.$overlay.hidden = true,
-            childEles: [
-                {
-                    tag: 'div',
-                    attrs: {
-                        'class': 'mdui-progress'
-                    },
-                    childEles: [
-                        {
-                            tag: 'div',
-                            attrs: {
-                                'class': 'mdui-progress-indeterminate'
-                            },
-                        }
-                    ]
-                }
-            ]
-        })
+        this.$overlay = createEle('div', undefined, ['mdui-iframe-overlay'], { 'hidden': '' }, $ele => $ele.ontransitionend = () => this.$overlay.hidden = true, [
+            createEle('div', undefined, ['mdui-progress'], undefined, undefined, [
+                createEle('div', undefined, ['mdui-progress-indeterminate'])
+            ])
+        ])
     }
     connectedCallback() {
         this.after(this.$overlay)
@@ -166,87 +147,50 @@ export class MduiPanelElement extends HTMLElement {
     setItems(...itemPatterns) {
         this.innerHTML = ''
         
-
-        this.append(createEle({
-            tag: 'div',
-            attrs: {
-                'class': 'mdui-panel',
-                'mdui-panel': ''
-            },
-            childEles: itemPatterns.map(pattern => {
+        this.append(createEle(
+            // panel
+            'div', undefined, ['mdui-panel'], { 'mdui-panel': '' }, undefined, itemPatterns.map(pattern => {
                 pattern.header.summaries = pattern.header.summaries || []
                 pattern.body.items = pattern.body.items || []
                 pattern.body.actions = pattern.body.actions || []
-                return createEle({
+                return createEle(
                     // item root
-                    tag: 'div',
-                    attrs: {
-                        'class': 'mdui-panel-item'
-                    },
-                    childEles: [
-                        {
-                            // header
-                            tag: 'div',
-                            attrs: {
-                                'class': 'mdui-panel-item-header'
-                            },
-                            childEles: [
-                                {
+                    'div', undefined, ['mdui-panel-item'], undefined, undefined, [
+                        createEle(
+                            // item header
+                            'div', undefined, ['mdui-panel-item-header'], undefined, undefined, [
+                                createEle(
                                     // header title
-                                    tag: 'div',
-                                    text: pattern.header.title,
-                                    attrs: {
-                                        'class': 'mdui-panel-item-title',
-                                    }
-                                },
-                                ...pattern.header.summaries.map(text => createEle({
+                                    'div', pattern.header.title, ['mdui-panel-item-title']
+                                ),
+                                ...pattern.header.summaries.map(text => createEle(
                                     // header summaries
-                                    tag: 'div',
-                                    text,
-                                    attrs: {
-                                        'class': 'mdui-panel-item-summary'
-                                    }
-                                }))
+                                    'div', text, ['mdui-panel-item-summary']
+                                ))
                             ]
-                        },
-                        {
-                            // body
-                            tag: 'div',
-                            attrs: {
-                                'class': 'mdui-panel-item-body'
-                            },
-                            childEles: [
-                                ...pattern.body.items.map(text => createEle({
+                        ),
+                        createEle(
+                            // item body
+                            'div', undefined, ['mdui-panel-item-body'], undefined, undefined, [
+                                ...pattern.body.items.map(text => createEle(
                                     // body items
-                                    tag: 'p',
-                                    text
-                                })),
-                                {
+                                    'p', text
+                                )),
+                                createEle(
                                     // actions div
-                                    tag: 'div',
-                                    attrs: {
-                                        'class': 'mdui-panel-item-actions'
-                                    },
-                                    childEles: pattern.body.actions.forEach(({ text, firesCloseEvent, onclick }) => {
-                                        const attrs = {
-                                            'class': 'mdui-btn mdui-ripple',
-                                        }
-                                        if (firesCloseEvent) attrs['mdui-panel-item-close'] = ''
-        
-                                        createEle({
-                                            // action button
-                                            tag: 'button',
-                                            attrs,
-                                            addition: $ele => $ele.onclick = onclick
-                                        })
-                                    })
-                                }
+                                    'div', undefined, ['mdui-panel-item-actions'], undefined, undefined, [
+                                        ...pattern.body.actions.map(({ text, firesCloseEvent, onclick }) => createEle(
+                                            // action buttons
+                                            'button', text, ['mdui-btn', 'mdui-ripple'], firesCloseEvent ? { 'mdui-panel-item-close': '' } : undefined, $ele => $ele.onclick = onclick
+                                        ))
+                                    ]
+                                )
                             ]
-                        }
+                        )
                     ]
-                })
+                )
             })
-        }))
+        ))
         mdui.mutation()
     }
 }

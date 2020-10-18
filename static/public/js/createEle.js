@@ -1,36 +1,22 @@
 /**
  * 
- * @typedef {Object} EleDescription
- * @property {string} tag
- * @property {string} [text=""]
- * @property {Object<string, string>} [attrs={}]
- * @property {($ele: HTMLElement) => void} [addition=$ele => {}]
- * @property {(EleDescription | HTMLElement)[]} [childEles=[]]
+ * @param {string} tagName 
+ * @param {string} [text]
+ * @param {string[]} [classList]
+ * @param {Object<string, string>} [attributes]
+ * @param {($ele) => void} [addition]
+ * @param {HTMLElement[]} [children]
  */
-
-
-/**
- *
- * @param {EleDescription} param0
- */
-export function createEle({
-    tag,
-    text = "",
-    attrs = {},
-    addition: callback = $ele => { },
-    childEles = []
-}) {
-    const $root = document.createElement(tag);
-    $root.innerText = text;
-    for (const attr in attrs) {
-        $root.setAttribute(attr, attrs[attr]);
+function createEle(tagName, text='', classList=[], attributes={}, addition=() => {}, children=[]) {
+    const $root = document.createElement(tagName)
+    $root.innerText = text
+    $root.classList.add(...classList)
+    for (const attr in attributes) {
+        $root.setAttribute(attr, attributes[attr]);
     }
-    callback($root);
-
-    for (const descOrEle of childEles) {
-        const $child = descOrEle instanceof Element ? descOrEle : createEle(descOrEle);
-        $root.append($child);
-    }
-
-    return $root;
+    $root.append(...children)
+    addition($root)
+    return $root
 }
+
+export default createEle
