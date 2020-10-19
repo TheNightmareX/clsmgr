@@ -31,17 +31,15 @@
     </div>
 
     <div class="mdui-drawer mdui-shadow-5">
-        <navigator-ele iframe="iframe" items-selector="li[url]" active-class-name="mdui-list-item-active">
+        <my-navigator iframe="iframe" items-selector="li[url]" active-class-name="mdui-list-item-active">
             <ul class="mdui-list">
                 <li class="mdui-list-item mdui-ripple" url="/students/list/">学生名单</li>
             </ul>
-        </navigator-ele>
+        </my-navigator>
     </div>
 
     <main>
-        <div class="mdui-iframe-wrap">
-            <iframe is="mdui-iframe" src=""></iframe>
-        </div>
+        <iframe is="my-mdui-iframe" src=""></iframe>
     </main>
 
 </body>

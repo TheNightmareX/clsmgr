@@ -20,7 +20,7 @@
 <body class="mdui-theme-primary-indigo mdui-theme-accent-pink">
 
     <main class="mdui-container">
-        <div is="activator-div" id="table-activator" class="mdui-row mdui-table-fluid" items-selector="tbody tr"
+        <div is="my-activator" id="table-activator" class="mdui-row mdui-table-fluid" items-selector="tbody tr"
             active-class-name="mdui-color-theme-accent" activate-on-click>
             <table class="mdui-table mdui-table-hoverable">
                 <thead>
@@ -67,7 +67,7 @@
                 <div class="mdui-row">
                     <div class="mdui-col-xs-4 mdui-textfield mdui-textfield-floating-label">
                         <label class="mdui-textfield-label">目标ID</label>
-                        <input is="int-input" class="mdui-textfield-input" name="target_id" type="number" min="0"
+                        <input is="my-int-input" class="mdui-textfield-input" name="target_id" type="number" min="0"
                             required />
                     </div>
                     <div class="mdui-col mdui-textfield mdui-textfield-floating-label">
@@ -82,7 +82,7 @@
                     </div>
                 </div>
                 <div class="mdui-row">
-                    <mdui-panel></mdui-panel>
+                    <my-mdui-panel></my-mdui-panel>
                 </div>
             </form>
         </div>

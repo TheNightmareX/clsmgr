@@ -1,44 +1,80 @@
 /**
  * 
  * @typedef {{ header: { title: string, summaries?: string[] }, body: { items?: string[], actions?: { text: string, firesCloseEvent?: boolean, onclick?: (ev) => void }[] } }} MduiPanelElementItemPattern
- * @typedef {import('./createEle.js').EleDescription} EleDescription
  */
 
-import createEle from "./createEle.js"
+import { createEle, addEventListenerOnce } from "./domutils.js"
 
 
-/**There ought to be a `div.mdui-iframe-wrap` outside the element */
-export class MduiIFrameElement extends HTMLIFrameElement {
-    static get observedAttributes() {
-        return ['src']
-    }
+/**A dynamic element which can always cover the target element. */
+export class OverlayElement extends HTMLElement {
+    static observedAttributes = ['target']
+    /**@type {HTMLElement} */
+    $target
+    shown = false
     constructor() {
         super()
-
-        this.addEventListener('load', () => this._hideOverlay())
-
-        this.$overlay = createEle('div', undefined, ['mdui-iframe-overlay'], { 'hidden': '' }, $ele => $ele.ontransitionend = () => this.$overlay.hidden = true, [
-            createEle('div', undefined, ['mdui-progress'], undefined, undefined, [
-                createEle('div', undefined, ['mdui-progress-indeterminate'])
-            ])
-        ])
+        this.addEventListener('transitionend', () => {
+            this.remove()
+        })
     }
-    connectedCallback() {
-        this.after(this.$overlay)
+    attributeChangedCallback(name, oldV, newV) {
+        this.$target = document.querySelector(newV)
+    }
+    checkTarget() {
+        if (!this.$target) {
+            throw new Error('Target not set.')
+        }
+    }
+    updateShape() {
+        this.checkTarget()
+        const style = this.style
+        const $target = this.$target
+        style.left = $target.offsetLeft + 'px'
+        style.top = $target.offsetTop + 'px'
+        style.width = $target.offsetWidth + 'px'
+        style.height = $target.offsetHeight + 'px'
+    }
+    show() {
+        if (this.shown) return
+        this.shown = true
+        this.updateShape()
+        this.classList.add('shown')
+        this.$target.after(this)
+    }
+    hide() {
+        if (!this.shown) return
+        this.shown = false
+        this.classList.remove('shown')
+    }
+}
+customElements.define('my-overlay', OverlayElement)
+
+
+export class MduiIFrameElement extends HTMLIFrameElement {
+    static observedAttributes = ['src']
+    constructor() {
+        super()
+        /**@type {OverlayElement} */
+        this.$overlay = createEle(
+            'my-overlay', undefined, undefined, undefined, undefined, [
+                createEle('div', undefined, ['mdui-progress'], undefined, undefined, [
+                    createEle('div', undefined, ['mdui-progress-indeterminate'])
+                ])
+            ]
+        )
+        this.$overlay.$target = this
+
+        this.addEventListener('load', () => {
+            this.$overlay.hide()
+        })
     }
     attributeChangedCallback(name, oldV, newV) {
         if (oldV == null) return
-        this._showOverlay()
-    }
-    _showOverlay() {
-        this.$overlay.classList.remove('hidden')
-        this.$overlay.hidden = false
-    }
-    _hideOverlay() {
-        this.$overlay.classList.add('hidden')
+        this.$overlay.show()
     }
 }
-customElements.define('mdui-iframe', MduiIFrameElement, {
+customElements.define('my-mdui-iframe', MduiIFrameElement, {
     extends: 'iframe'
 })
 
@@ -96,7 +132,7 @@ export class ActivatorElement extends HTMLDivElement {
         }
     }
 }
-customElements.define('activator-div', ActivatorElement, {
+customElements.define('my-activator', ActivatorElement, {
     extends: 'div'
 })
 
@@ -125,7 +161,7 @@ export class NavigatorElement extends HTMLElement {
 
     }
 }
-customElements.define('navigator-ele', NavigatorElement)
+customElements.define('my-navigator', NavigatorElement)
 
 
 export class IntInputElement extends HTMLInputElement {
@@ -134,7 +170,7 @@ export class IntInputElement extends HTMLInputElement {
         this.onkeypress = ev => ev.key != '.'
     }
 }
-customElements.define('int-input', IntInputElement, {
+customElements.define('my-int-input', IntInputElement, {
     extends: 'input'
 })
 
@@ -194,7 +230,7 @@ export class MduiPanelElement extends HTMLElement {
         mdui.mutation()
     }
 }
-customElements.define('mdui-panel', MduiPanelElement)
+customElements.define('my-mdui-panel', MduiPanelElement)
 
 
 /**
@@ -203,7 +239,7 @@ customElements.define('mdui-panel', MduiPanelElement)
  * @param {T[]} items 
  * @param {number} count 
  */
-function pickOutRandomItems(items, count) {
+export function pickOutRandomItems(items, count) {
     function pickOutUniqueIdx() {
         const idx = Math.floor(Math.random() * length)
         if (chosenIdxSet.has(idx)) {

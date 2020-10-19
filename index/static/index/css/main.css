@@ -13,7 +13,8 @@
         overflow: hidden;
     }
 
-div.mdui-iframe-wrap {
-    width: 100%;
-    height: 100%;
-}
+        iframe {
+            display: block;
+            width: 100%;
+            height: 100%;
+        }

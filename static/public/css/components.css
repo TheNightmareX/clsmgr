@@ -1,22 +1,11 @@
-.mdui-iframe-wrap {
-    position: relative;
+my-overlay {
+    display: block;
+    position: absolute;
+    background-color: white;
+    opacity: 0;
+    transition: opacity .5s linear;
 }
 
-    .mdui-iframe-wrap > iframe[is="mdui-iframe"] {
-        display: block;
-        width: 100%;
-        height: 100%;
+    my-overlay.shown {
+        opacity: 1;
     }
-
-    .mdui-iframe-wrap > .mdui-iframe-overlay {
-        position: absolute;
-        left: 0;
-        right: 0;
-        top: 0;
-        bottom: 0;
-        background-color: white;
-    }
-        .mdui-iframe-wrap > .mdui-iframe-overlay.hidden {
-            opacity: 0;
-            transition: opacity .5s linear;
-        }

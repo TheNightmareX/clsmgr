@@ -33,7 +33,7 @@ const $tableActivator = document.querySelector('#table-activator')
     const $submitEditRequestDialog = document.querySelector('#submit-edit-request-dialog')
 
     /**@type {MduiPanelElement} */
-    const $panel = $submitEditRequestDialog.querySelector('mdui-panel')
+    const $panel = $submitEditRequestDialog.querySelector('my-mdui-panel')
 
     const $form = $submitEditRequestDialog.querySelector('form')
 
