@@ -1,9 +1,9 @@
 my-overlay {
     display: block;
     position: absolute;
-    background-color: white;
     opacity: 0;
     transition: opacity .5s linear;
+    user-select: none;
 }
 
     my-overlay.shown {

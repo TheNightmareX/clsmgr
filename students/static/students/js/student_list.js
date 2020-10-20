@@ -1,13 +1,13 @@
 /**
  * 
  * @typedef {{ id: number, target_id: number, target_value: string, remark: string, creation_time: string, last_modified: string, status: 'O' | 'C' | 'A', message: string }} EditRequestListItem
- * @typedef {import('../../../../static/public/js/components.js').MduiPanelElementItemPattern} MduiPanelElementItemPattern
+ * @typedef {import('../../../../static/js/components.js').MduiPanelElementItemPattern} MduiPanelElementItemPattern
  */
 
 import {
     ActivatorElement,
     MduiPanelElement
-} from "../../../../static/public/js/components.js"
+} from "../../../../static/js/components.js"
 
 
 /**@type {ActivatorElement} */

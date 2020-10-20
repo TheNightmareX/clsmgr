@@ -1,23 +1,15 @@
+{% extends "base.html" %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="zh">
 
-<head>
+{% block title %}Index{% endblock %}
 
-    <title>Index</title>
-    <meta charset="UTF-8">
+{% block statics %}
+<link rel="stylesheet" href="{% static 'index/css/main.css' %}">
+<script defer type="module" src="{% static 'index/js/main.js' %}"></script>
+{% endblock %}
 
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/css/mdui.min.css"
-        integrity="sha384-2PJ2u4NYg6jCNNpv3i1hK9AoAqODy6CdiC+gYiL2DVx+ku5wzJMFNdE3RoWfBIRP" crossorigin="anonymous" />
-    <link rel="stylesheet" href="{% static 'index/css/main.css' %}">
-
-    <script defer src="https://cdn.jsdelivr.net/npm/mdui@1.0.0/dist/js/mdui.min.js"
-        integrity="sha384-aB8rnkAu/GBsQ1q6dwTySnlrrbhqDwrDnpVHR2Wgm8pWLbwUnzDcIROX3VvCbaK+" crossorigin="anonymous">
-    </script>
-    <script defer type="module" src="{% static 'index/js/main.js' %}"></script>
-
-</head>
-
+{% block body %}
 <body class="mdui-theme-primary-indigo mdui-theme-accent-pink mdui-appbar-with-toolbar mdui-drawer-body-left">
 
     <div class="mdui-appbar mdui-appbar-fixed">
@@ -43,5 +35,4 @@
     </main>
 
 </body>
-
-</html>
+{% endblock %}

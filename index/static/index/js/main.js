@@ -12,7 +12,7 @@
  */
 
 
-import "../../../../static/public/js/components.js"
+import "../../../../static/js/components.js"
 
 
 class Database {
