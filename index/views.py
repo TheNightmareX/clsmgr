@@ -1,57 +1,36 @@
 from django.shortcuts import render
-from django.http import HttpRequest
-from django.http import HttpResponse
-from django.http import HttpResponseRedirect
 from django.db.models.query import QuerySet
-from django.views import generic as generic_views
-import json
-import datetime
-from . import models
+from django.views.generic import ListView, TemplateView
+
+from rest_framework.request import Request
+from rest_framework.response import Response
+from rest_framework import status
+from rest_framework.views import APIView
+
+from . import models, serializers
 
 
-def index(request):
-    return render(request, 'index/main.html')
+class IndexView(TemplateView):
+    template_name = 'index/main.html'
 
 
-class StudentListView(generic_views.ListView):
+class StudentListView(ListView):
     model = models.Student
     context_object_name = 'students'
 
 
-class GetEditRequestListApi(generic_views.View):
-    def get_data(self):
-        query_set: QuerySet = models.StudentEditRequest.objects.all()
-        query_set = query_set.order_by('-id')[:20]
-        data = []
-        for record in query_set:
-            record: models.StudentEditRequest
-            creation_time: datetime.datetime = record.creation_time
-            last_modified: datetime.datetime = record.last_modified
-            creation_time: str = creation_time.strftime('%Y-%m-%d %H:%M:%S')
-            last_modified: str = last_modified.strftime('%Y-%m-%d %H:%M:%S')
-            data.append({
-                'id': record.id,
-                'target_id': record.target_id,
-                'target_value': record.target_value,
-                'remark': record.remark,
-                'creation_time': creation_time,
-                'last_modified': last_modified,
-                'status': record.status,
-                'message': record.message,
-            })
-        return data
+class StudentEditRequestAPIView(APIView):
+    def get(self, request: Request):
+        queryset: QuerySet = models.StudentEditRequest.objects.all()
+        queryset = queryset.order_by('-id')[:20]
+        serializer = serializers.StudentEditRequestSerializer(
+            queryset, many=True)
+        return Response(serializer.data)
 
-    def get(self, request: HttpRequest):
-        jsonData = json.dumps(self.get_data())
-        return HttpResponse(jsonData)
-
-
-class CreateEditRequestListApi(generic_views.View):
-    def post(self, request: HttpRequest):
-        target_id = int(request.POST['target_id'])
-        target_value = request.POST['target_value']
-        remark = request.POST['remark']
-        record = models.StudentEditRequest(
-            target_id=target_id, target_value=target_value, remark=remark)
-        record.save()
-        return HttpResponse()
+    def post(self, request: Request):
+        serializer = serializers.StudentEditRequestSerializer(
+            data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response()
+        return Response(status=status.HTTP_400_BAD_REQUEST)

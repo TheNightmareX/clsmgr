@@ -40,7 +40,7 @@ const $tableActivator = document.querySelector('#table-activator')
         /**@type {EditRequestListItem[]} */
         const requestList = await new Promise(resolve => {
             const request = new XMLHttpRequest()
-            request.open('get', '/students/edit-requests/list')
+            request.open('get', '/students/edit-requests')
             request.send()
             request.onload = () => resolve(JSON.parse(request.responseText))
         })
@@ -55,12 +55,12 @@ const $tableActivator = document.querySelector('#table-activator')
                     title: `${request.id}#`,
                     summaries: [
                         `状态: ${{O: '待通过', C: '未通过', A: '已通过'}[request.status]}`,
-                        `更新: ${request.last_modified}`,
+                        `更新: ${new Date(request.last_modified).toLocaleString()}`,
                     ]
                 },
                 body: {
                     items: [
-                        `创建: ${request.creation_time}`,
+                        `创建: ${new Date(request.creation_time).toLocaleString()}`,
                         `目标ID: ${request.target_id}`,
                         `目标值: ${request.target_value}`,
                         `备注: ${request.remark}`,
@@ -77,7 +77,7 @@ const $tableActivator = document.querySelector('#table-activator')
         const response = await new Promise((resolve, reject) => {
             const formData = new FormData($form)
             const request = new XMLHttpRequest()
-            request.open('post', '/students/edit-requests/create')
+            request.open('post', '/students/edit-requests')
             request.onload = () => {
                 if (request.status == 404) reject()
                 else resolve(request.responseText)
